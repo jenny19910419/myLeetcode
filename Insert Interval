@@ -1,0 +1,43 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+ class Solution {
+public:
+    vector<Interval> insert(vector<Interval> &intervals, Interval newInterval) {
+        vector<Interval>::iterator itr =  intervals.begin();
+        vector<Interval>::iterator pre = itr;//points to the first obsolete element
+        
+        while(itr!=intervals.end()) {
+            if(itr->start>newInterval.end) {
+                if(pre == itr)
+                    intervals.insert(itr, newInterval);
+                else {
+                    itr = intervals.erase(pre,itr);
+                    intervals.insert(itr, newInterval);
+                }
+                return intervals;
+            }
+            else if(itr->end <newInterval.start) {
+                itr++;
+                pre++;
+                continue;
+            }
+            else {
+                newInterval.start = std::min(itr->start,newInterval.start);
+                newInterval.end = std::max(itr->end,newInterval.end);
+                //itr=intervals.erase(itr);//O(n)
+                itr++;
+            }
+        }
+        if(pre!=itr) itr = intervals.erase(pre,itr); //the erase does not include the elements at the last position
+        intervals.insert(intervals.end(),newInterval);
+        return intervals;
+    }
+    
+};
