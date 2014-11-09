@@ -1,0 +1,22 @@
+class Solution {
+public:
+    void sortColors(int A[], int n) {
+        int p_red = 0, p_blue = n-1,i = 0;
+        //on the left of p_red, it is always red;on the right of blue, it must be blue
+        //p_red points to the first not red pointer,p_blue points to the first not_blue pointer
+        while(i <= p_blue) {
+            if(A[i] == 0) {
+                std::swap(A[i],A[p_red]);
+                p_red++;
+                i++;
+                continue;
+            } 
+            else if(A[i]== 2) {
+                std::swap(A[p_blue],A[i]);
+                p_blue--;
+                continue;
+            }
+            i++;
+        }
+    }
+};
