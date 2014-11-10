@@ -1,41 +1,27 @@
 class Solution {
 public:
     int search(int A[], int n, int target) {
-        if (n==1) {
-            if (A[0]==target) {
-                return 0;
-            }
-            else
-                return -1;
-        }
-        
-        int start = 0, end = n-1;
-        while(start<end) {
-            int mid = start + (end-start)/2;
-        
-            //4 5 0 1 2 3
-            if(A[mid]==target)
-                return mid;
-            
-            //the starting index is in range [start,mid]; the latter part [mid,end] is in sorted order
-            else if(A[mid]< A[end]) {
-                if(target>A[mid] && target<=A[end]) {
-                    start = mid+1;
+        int low = 0, high = n -1;
+        while(low<=high) {
+            const int mid = low + (high-low)/2;
+            if(A[mid] == target) return mid;
+            if(A[low]<=A[mid]) {
+                //the equal is very important here
+                if(A[low] <= target && target < A[mid]) {
+                    high = mid-1;
                 }
                 else {
-                    end = mid-1;
+                    low = mid+1;
                 }
             }
-            //the starting index is in range (mid,end]; the former part [start,mid] is in sorted order
-            else if(A[mid] > A[end]) {
-                if(A[start]<=target && target<A[mid]) {
-                    end = mid-1;
+            else if(A[low] > A[mid]) {
+                if(A[mid]<target && target<=A[high]) {
+                    low = mid+1;
                 }
                 else {
-                    start=mid+1;
+                    high = mid-1;
                 }
             }
-            if(start==end && A[start] == target) return start;
         }
         
         return -1;
